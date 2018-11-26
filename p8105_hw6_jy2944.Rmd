@@ -110,7 +110,10 @@ city_logistic = homicide_data %>%
 city_logistic
 ```
 
+
 ### Plot showing ORs and CIs for each city
+
+Create a plot that shows the estimated ORs and CIs for each city. Organize cities according to estimated OR, and comment on the plot.
 
 ```{r p1_plot, fig.width = 10, fig.height = 6}
 city_logistic %>% 
@@ -131,4 +134,10 @@ city_logistic %>%
 ```
 
 Estimated odds ratio and its confidence interval for solving homices comparing non-white victioms to white victims varies across cities in US. Most of the cities have estimated odds ratios lower than 1, meaning that homicides in which the victim is non-white are less likely to be resolved than those in which the victim is white in US. Boston, MA has the lowest estimated odds ratio while Tampa, FL has the highest estimated odds ratio.
+
+# Problem 2
+
+```{r}
+
+```
 
