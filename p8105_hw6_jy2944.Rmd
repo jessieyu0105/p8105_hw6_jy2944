@@ -1,0 +1,24 @@
+---
+title: "p8105_hw6_jy2944"
+author: "Jie Yu"
+date: "11/25/2018日"
+output: github_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(modelr)
+library(mgcv)
+
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  fig.width = 8,
+  fig.asp = .6,
+  out.width = "90%",
+  warning = FALSE,
+  message = FALSE
+)
+theme_set(theme_bw() + theme(legend.position = "bottom"))
+```
