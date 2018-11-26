@@ -110,6 +110,25 @@ city_logistic = homicide_data %>%
 city_logistic
 ```
 
+### Plot showing ORs and CIs for each city
 
+```{r p1_plot, fig.width = 10, fig.height = 6}
+city_logistic %>% 
+  # # organize cities according to estimated OR
+  mutate(city_state = forcats::fct_reorder(city_state, OR)) %>% 
+  # make the plot
+  ggplot(aes(x = city_state, y = OR)) + 
+  # points represent the ORs for each city
+  geom_point(color = "red") + 
+  # geom_errorbar(): add error bars based on the upper and lower limits
+  geom_errorbar(aes(x = city_state, ymin = conf.lower, ymax = conf.upper)) + 
+  labs(
+    title = "Estimated ORs and CIs for solving homicides comparing non-white victims to white victims", 
+    x = "City", 
+    y = "Estimate odds ratio") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))
 
+```
+
+Estimated odds ratio and its confidence interval for solving homices comparing non-white victioms to white victims varies across cities in US. Most of the cities have estimated odds ratios lower than 1, meaning that homicides in which the victim is non-white are less likely to be resolved than those in which the victim is white in US.
 
