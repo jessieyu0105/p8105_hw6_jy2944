@@ -183,11 +183,36 @@ Now, the explanations of each variable are as follows:
 * `smoken`: average number of cigarettes smoked per day during pregnancy
 * `wtgain`: mother’s weight gain during pregnancy (pounds)
 
-```{r}
-library(leaps)
-leaps <- regsubsets(bwt ~ ., data = birth_weight)
-summary(leaps)
-plot(leaps, scale = "bic")
 
+### Model Selection
+
+I use backward stepwise regression to select the model. I choose backward search because the MSE tends to be unbiased when important predictors are retained at each step.
+
+```{r p2_model_select}
+fit_all <- lm(bwt ~ ., data = birth_weight)
+step(fit_all, direction = "backward")
 ```
+
+The "best" model selected by the stepwise backward stepwise regression is `bwt` ~ `babysex` + `bhead` + `blength`+ `gaweeks` + `delwt` + `mheight` + `mrace` + `parity` + `ppwt` + `smoken` + `fincome`. We then check colinearity among its predictors using variance inflation factors (VIF), and look at the summary of the model.
+
+```{r p2_vif}
+# "best" model selected
+fit_best <- lm(bwt ~ babysex + bhead + blength + delwt + fincome + 
+                 gaweeks + mheight + mrace + parity + ppwt + smoken, data = birth_weight)
+
+# Identify collinearity among predictors
+HH::vif(fit_best)
+```
+
+```{r p2_model_summary}
+# summary the model
+summary(fit_best)
+```
+
+All of the VIFs calculated for each predictor are lower than 5, indicating that the coefficients might not be misleading due to collinearity. The adjusted $R^{2}$ is 0.7173, which is good for model building, and most of the predictors have significant coefficient.
+
+
+
+
+
 
