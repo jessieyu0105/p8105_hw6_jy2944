@@ -230,7 +230,7 @@ birth_weight %>%
     )
 ```
 
-The above plot suggests that the residual become higher at lower prediction value, meaning that the model will not fit the data well when the prediction value goes to small.
+The above plot suggests that the residual become higher at lower prediction value, meaning that the model will not fit the data well and there will be some outliers when the prediction value goes to small.
 
 
 ### Compare models
