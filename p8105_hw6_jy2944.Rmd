@@ -105,7 +105,7 @@ city_logistic = homicide_data %>%
   group_by(city_state) %>% 
   nest() %>% 
   # Apply the function `or_and_ci` to each city
-  mutate(or_and_ci = map(.x = data, ~or_and_ci(.x))) %>% 
+  mutate(or_and_ci = purrr::map(.x = data, ~or_and_ci(.x))) %>% 
   select(-data) %>% 
   unnest()
 
@@ -135,7 +135,7 @@ city_logistic %>%
 
 ```
 
-Estimated odds ratio and its confidence interval for solving homices comparing non-white victioms to white victims varies across cities in US. Most of the cities have estimated odds ratios lower than 1, meaning that homicides in which the victim is non-white are less likely to be resolved than those in which the victim is white in US. Boston, MA has the lowest estimated odds ratio while Tampa, FL has the highest estimated odds ratio.
+Estimated odds ratio and its 95% confidence interval for solving homices comparing non-white victioms to white victims varies across cities in US. Most of the cities have estimated odds ratios lower than 1, meaning that homicides in which the victim is non-white are less likely to be resolved than those in which the victim is white in US. Boston, MA has the lowest estimated odds ratio while Tampa, FL has the highest estimated odds ratio.
 
 # Problem 2
 
