@@ -230,7 +230,58 @@ birth_weight %>%
     )
 ```
 
-The above plot suggests that the residual become higher at lower prediction value, meaning that the model will not fit the data well when the prediction value goes to too small.
+The above plot suggests that the residual become higher at lower prediction value, meaning that the model will not fit the data well when the prediction value goes to small.
+
+
+### Compare models
+
+Compare your model to two others:
+
+* One using length at birth and gestational age as predictors (main effects only)
+
+* One using head circumference, length, sex, and all interactions (including the three-way interaction) between these
+
+Make this comparison in terms of the cross-validated prediction error; use `crossv_mc` and functions in `purrr` as appropriate.
+
+```{r}
+# generate 100 pairs training and testing sets
+cv_df = crossv_mc(birth_weight, 100) %>% 
+  mutate(train = map(train, as_tibble),
+         test = map(test, as_tibble))
+  
+  
+cv_df = cv_df %>% 
+  mutate(
+    model_1 = map(train, ~lm(bwt ~ babysex + bhead + blength + delwt + fincome + 
+                 gaweeks + mheight + mrace + parity + ppwt + smoken, data = .x)),
+    model_2 = map(train, ~lm(bwt ~ blength + gaweeks, data = .x)),
+    model_3 = map(train, ~lm(bwt ~ babysex + blength + bhead + babysex * blength + babysex * bhead + 
+                                     blength * bhead + babysex * blength * bhead, data = .x))
+        ) %>% 
+  mutate(
+    rmse_model_1 = map2_dbl(model_1, test, ~rmse(model = .x, data = .y)),
+    rmse_model_2 = map2_dbl(model_2, test, ~rmse(model = .x, data = .y)),
+    rmse_model_3 = map2_dbl(model_3, test, ~rmse(model = .x, data = .y))
+    )
+
+cv_df %>% 
+  select(starts_with("rmse")) %>% 
+  gather(key = model, value = rmse) %>% 
+  mutate(model = str_replace(model, "rmse_", ""),
+         model = fct_inorder(model)) %>% 
+  ggplot(aes(x = model, y = rmse, fill = model)) + 
+  geom_violin() +
+  stat_summary(fun.y = mean, geom = "point", color = "blue", size = 3) + 
+  labs(
+    title = "The distribution of RMSE values for each model",
+    x = "Model",
+    y = "RMSE"
+    )
+  
+```
+
+The plot suggests that the model I selected (`model_1`) is a clear winner because it has lowest mean RMSE value and the overall distribution of RMSE values is relatively low. The model using main effects only (`model_2`) is the worst because its RMSE values are really high. The three-way interaction model (`model_3`) is better than the main effect model because it has a rather lower distribution of RMSE values.
+
 
 
 
