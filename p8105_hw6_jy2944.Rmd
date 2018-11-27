@@ -144,28 +144,26 @@ This problem focuses on the effects of several variables on a child's birthweigh
 ```{r}
 birth_weight = read_csv("./data/birthweight.csv") %>%
   janitor::clean_names() %>% 
+  # convert some categorical data from integer to factor
   mutate(
-    # convert some categorical data from integer to factor
     babysex = as.factor(babysex),
     frace = as.factor(frace),
     malform = as.factor(malform),
-    mrace = as.factor(mrace),
-    # convert birthweight unit from grams to pounds
-    bwt = as.numeric(bwt * 0.00220462)
+    mrace = as.factor(mrace)
   )
 
 # Check if there is missing data
 skimr::skim(birth_weight )
 ```
 
-After importing the data, I convert `babysex`, `frace`, `malform` and `mrace` from integer to factor because they are categorical data. I also convert the unit of `bwt` from grams to pounds to make it consistent with other weitht variables in the dataset. There is no missing data in the dataset.
+After importing the data, I convert `babysex`, `frace`, `malform` and `mrace` from integer to factor because they are categorical data. There is no missing data in the dataset.
 
-Now, the explanations of each variable are as follows:
+The explanations of each variable are as follows:
 
 * `babysex`: baby’s sex (male = 1, female = 2)
 * `bhead`: baby’s head circumference at birth (centimeters)
 * `blength`: baby’s length at birth (centimeteres)
-* `bwt`: baby’s birth weight (pounds)
+* `bwt`: baby’s birth weight (grams)
 * `delwt`: mother’s weight at delivery (pounds)
 * `fincome`: family monthly income (in hundreds, rounded)
 * `frace`: father’s race (1= White, 2 = Black, 3 = Asian, 4 = Puerto Rican, 8 = Other, 9 = Unknown)
