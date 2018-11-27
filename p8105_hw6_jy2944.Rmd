@@ -137,7 +137,57 @@ Estimated odds ratio and its confidence interval for solving homices comparing n
 
 # Problem 2
 
+This problem focuses on the effects of several variables on a child's birthweight.
+
+### Import and tidy data
+
 ```{r}
+birth_weight = read_csv("./data/birthweight.csv") %>%
+  janitor::clean_names() %>% 
+  mutate(
+    # convert some categorical data from integer to factor
+    babysex = as.factor(babysex),
+    frace = as.factor(frace),
+    malform = as.factor(malform),
+    mrace = as.factor(mrace),
+    # convert birthweight unit from grams to pounds
+    bwt = as.numeric(bwt * 0.00220462)
+  )
+
+# Check if there is missing data
+skimr::skim(birth_weight )
+```
+
+After importing the data, I convert `babysex`, `frace`, `malform` and `mrace` from integer to factor because they are categorical data. I also convert the unit of `bwt` from grams to pounds to make it consistent with other weitht variables in the dataset. There is no missing data in the dataset.
+
+Now, the explanations of each variable are as follows:
+
+* `babysex`: baby’s sex (male = 1, female = 2)
+* `bhead`: baby’s head circumference at birth (centimeters)
+* `blength`: baby’s length at birth (centimeteres)
+* `bwt`: baby’s birth weight (pounds)
+* `delwt`: mother’s weight at delivery (pounds)
+* `fincome`: family monthly income (in hundreds, rounded)
+* `frace`: father’s race (1= White, 2 = Black, 3 = Asian, 4 = Puerto Rican, 8 = Other, 9 = Unknown)
+* `gaweeks`: gestational age in weeks
+* `malform`: presence of malformations that could affect weight (0 = absent, 1 = present)
+* `menarche`: mother’s age at menarche (years)
+* `mheigth`: mother’s height (inches)
+* `momage`: mother’s age at delivery (years)
+* `mrace`: mother’s race (1= White, 2 = Black, 3 = Asian, 4 = Puerto Rican, 8 = Other)
+* `parity`: number of live births prior to this pregnancy
+* `pnumlbw`: previous number of low birth weight babies
+* `pnumgsa`: number of prior small for gestational age babies
+* `ppbmi`: mother’s pre-pregnancy BMI
+* `ppwt`: mother’s pre-pregnancy weight (pounds)
+* `smoken`: average number of cigarettes smoked per day during pregnancy
+* `wtgain`: mother’s weight gain during pregnancy (pounds)
+
+```{r}
+library(leaps)
+leaps <- regsubsets(bwt ~ ., data = birth_weight)
+summary(leaps)
+plot(leaps, scale = "bic")
 
 ```
 
